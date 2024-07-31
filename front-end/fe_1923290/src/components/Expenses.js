@@ -65,6 +65,11 @@ export default function Expenses(){
             <option value="182">6 Months</option>
             <option value="365">Yearly</option>
             </select>
+            
+            <br></br>
+            <br></br>
+
+            <input type="submit" value="Add Expense"/>
 
             <br/><br/>
 
