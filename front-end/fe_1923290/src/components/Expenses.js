@@ -6,13 +6,14 @@ import './Layout.css';
 
 export default function Expenses(){
     const expense=useRef();
+    const expenseCost=useRef();
     const expenseDate=useRef();
     const expenseFrequency=useRef();
 
     const validateForm = () => {
         let formValid = false;
 
-        if (expense.current.validity.valueMissing || expenseDate.current.validity.valueMissing  || expenseFrequency.current.validity.valueMissing){
+        if (expense.current.validity.valueMissing || expenseCost.current.validity.valueMissing || expenseDate.current.validity.valueMissing || expenseFrequency.current.validity.valueMissing){
                 alert("Fill out all of the boxes, please.");
         }
         else if (expenseDate.current.validity.date){
@@ -29,6 +30,7 @@ export default function Expenses(){
         if(validateForm()){
             axios.post(' https://reqres.in/api/users',{
                 expense: expense.current.value,
+                expenseCost: expenseCost.current.value,
                 expenseDate: expenseDate.current.value,
                 expenseFrequency: expenseFrequency.current.value,
             }).then(response=>{
@@ -38,6 +40,7 @@ export default function Expenses(){
                 }
             }).then(()=>{
                 expense.current.value="";
+                expenseCost.current.value="";
                 expenseDate.current.value="";
                 expenseFrequency.current.value="";
             })
@@ -50,26 +53,29 @@ export default function Expenses(){
     return (
         <form className="expense" noValidate onSubmit={handleSubmit}>
             <br></br>
-            <label className="InputLabel">Expense: £</label>
-            <input type="number" min="1" step="any" name="expense" ref={expense} required/><br/><br/>
+            <label className="InputLabel">Expense: </label>
+            <input type="string" name="expense" ref={expense} required/><br/><br/>
+
+            <label className="InputLabel">Expense Cost: £</label>
+            <input type="number" min="1" step="any" name="expenseCost" ref={expenseCost} required/><br/><br/>
 
             <label className="InputLabel">Date of Expense: </label>
             <input type="date" ref={expenseDate} name="payday" size="50" required/><br/><br/>
 
             <label for="expenseFrequency">Expense Frequency: </label>
             <select id="expenseFrequency" name="cars" ref ={expenseFrequency}>
-            <option value="7">1 Week</option>
-            <option value="14">2 Weeks</option>
-            <option value="30">Monthly</option>
-            <option value="90">3 Months</option>
-            <option value="182">6 Months</option>
-            <option value="365">Yearly</option>
-            </select>
+                <option value="7">1 Week</option>
+                <option value="14">2 Weeks</option>
+                <option value="30">Monthly</option>
+                <option value="90">3 Months</option>
+                <option value="182">6 Months</option>
+                <option value="365">Yearly</option>
+                </select>
             
             <br></br>
             <br></br>
 
-            <input type="submit" value="Add Expense"/>
+            
 
             <br/><br/>
 
