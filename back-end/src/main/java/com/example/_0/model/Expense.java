@@ -1,7 +1,6 @@
 package com.example._0.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,16 +13,16 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String name;
-    private BigDecimal cost;
-    private LocalDate date;
-    private String frequency;
+    private String expense;
+	private BigDecimal cost;
+	private String date;
+	private String frequency;
 
     public Expense() {
     }
 
-    public Expense(String name, BigDecimal cost, LocalDate date, String frequency) {
-        this.name = name;
+    public Expense(String name, BigDecimal cost, String date, String frequency) {
+        this.expense = name;
         this.cost = cost;
         this.date = date;
         this.frequency = frequency;
@@ -39,12 +38,12 @@ public class Expense {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getExpense() {
+        return expense;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setExpense(String expense) {
+        this.expense = expense;
     }
 
     public BigDecimal getCost() {
@@ -55,11 +54,11 @@ public class Expense {
         this.cost = cost;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -75,7 +74,7 @@ public class Expense {
     public String toString() {
         return "Expense{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + expense + '\'' +
                 ", cost=" + cost +
                 ", date=" + date +
                 ", frequency='" + frequency + '\'' +

@@ -32,7 +32,7 @@ export default function Input(){
             
 
 
-            axios.post(' https://reqres.in/api/users',{
+            axios.post('http://localhost:8080/expense',{
                 income: income.current.value,
                 payday: payday.current.value,
             }).then(response=>{
