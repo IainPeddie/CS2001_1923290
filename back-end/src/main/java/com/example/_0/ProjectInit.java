@@ -22,17 +22,18 @@ public class ProjectInit implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         try {
-            expenseRepository.deleteAll();
+        	//For testing
+            //expenseRepository.deleteAll();
 
-            Expense rent = new Expense("Rent", new BigDecimal("1000.00"), "2024-12-19", "Monthly");
-            Expense groceries = new Expense("Groceries", new BigDecimal("150.00"), "2024-12-21", "Weekly");
-            Expense utilities = new Expense("Utilities", new BigDecimal("200.00"), "2024-12-4", "Monthly");
-            Expense subscription = new Expense("Netflix Subscription", new BigDecimal("15.99"), "2024-12-7", "Monthly");
+            //Expense rent = new Expense("Rent", new BigDecimal("1000.00"), "2024-12-19", "Monthly");
+            //Expense groceries = new Expense("Groceries", new BigDecimal("150.00"), "2024-12-21", "Weekly");
+            // utilities = new Expense("Utilities", new BigDecimal("200.00"), "2024-12-04", "Monthly");
+            //Expense subscription = new Expense("Netflix Subscription", new BigDecimal("15.99"), "2024-12-07", "Monthly");
 
-            expenseRepository.save(rent);
-            expenseRepository.save(groceries);
-            expenseRepository.save(utilities);
-            expenseRepository.save(subscription);
+            //expenseRepository.save(rent);
+            //expenseRepository.save(groceries);
+            //expenseRepository.save(utilities);
+            //expenseRepository.save(subscription);
 
             Iterable<Expense> expenses = expenseRepository.findAll();
             expenses.forEach(expense -> logger.info(expense.toString()));

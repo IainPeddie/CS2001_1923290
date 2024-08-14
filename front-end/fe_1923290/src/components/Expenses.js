@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import './Layout.css';
@@ -10,6 +10,9 @@ export default function Expenses(){
     const expenseDate=useRef();
     const expenseFrequency=useRef();
 
+    const [expenses, setExpenses] = useState([]);
+
+    
     const validateForm = () => {
         let formValid = false;
 
@@ -28,14 +31,15 @@ export default function Expenses(){
         event.preventDefault();
 
         if(validateForm()){
-            axios.post(' https://reqres.in/api/users',{
+            axios.post(' http://localhost:8080/expense',{
                 expense: expense.current.value,
-                expenseCost: expenseCost.current.value,
-                expenseDate: expenseDate.current.value,
-                expenseFrequency: expenseFrequency.current.value,
+                cost: expenseCost.current.value,
+                date: expenseDate.current.value,
+                frequency: expenseFrequency.current.value,
             }).then(response=>{
                 console.log(response);
                 if (response.status === 201){
+                    fetchExpenses();// Refreshes the table if the input is submitted.
                     alert("Expense Submitted.")
                 }
             }).then(()=>{
@@ -47,14 +51,66 @@ export default function Expenses(){
             .catch(error=>{
                 console.log(error);
             })
+
+            
         }
       }
 
+    const fetchExpenses = () => {
+        axios.get('http://localhost:8080/expense')
+            .then(response => {
+                setExpenses(response.data);  // Set fetched data to state
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    const handleDelete = (id) => {
+        const confirmed = window.confirm("Are you sure you want to delete this expense?");
+        if (confirmed) {
+            axios.delete(`http://localhost:8080/expense/${id}`)
+                .then(response => {
+                    if (response.status === 200) {
+                        alert("Expense Deleted.");
+                        fetchExpenses();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+    }
+
+    useEffect(() => {
+        fetchExpenses(); 
+    }, [])
+
+      
+
+
+
+
     return (
+        <div>
         <form className="expense" noValidate onSubmit={handleSubmit}>
             <br></br>
-            <label className="InputLabel">Expense: </label>
-            <input type="string" name="expense" ref={expense} required/><br/><br/>
+
+
+            <label className="InputLabel" for="InputLabel">Expense: </label>
+            <select type="string" id="expense" name ="expense" ref ={expense}>
+                <option value="Car Lease">Car Lease</option>
+                <option value="Car Tax">Car Tax</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Internet">Internet</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Mortgage">Mortgage</option>
+                <option value="Phone Bill">Phone Bill</option>
+                <option value="Rent">Rent</option>
+                <option value="Savings">Savings</option>
+                <option value="Subscriptions">Subscriptions</option>
+                <option value="TV Liscense">TV Liscence</option>
+            </select><br></br><br></br>
 
             <label className="InputLabel">Expense Cost: £</label>
             <input type="number" min="1" step="any" name="expenseCost" ref={expenseCost} required/><br/><br/>
@@ -63,25 +119,46 @@ export default function Expenses(){
             <input type="date" ref={expenseDate} name="payday" size="50" required/><br/><br/>
 
             <label for="expenseFrequency">Expense Frequency: </label>
-            <select id="expenseFrequency" name="cars" ref ={expenseFrequency}>
-                <option value="7">1 Week</option>
-                <option value="14">2 Weeks</option>
-                <option value="30">Monthly</option>
-                <option value="90">3 Months</option>
-                <option value="182">6 Months</option>
-                <option value="365">Yearly</option>
-                </select>
-            
-            <br></br>
-            <br></br>
-
-            
+            <select id="expenseFrequency" ref ={expenseFrequency}>
+                <option value="Weekly">Weekly</option>
+                <option value="Fortnightly">Fortnightly</option>
+                <option value="Monthly">Monthly</option>
+                <option value="Trimonthly">Trimonthly</option>
+                <option value="Bianually">Bianually</option>
+                <option value="Anually">Anually</option>
+            </select>
 
             <br/><br/>
 
             <input type="submit" value="Submit"/>
 
         </form>
+        <br></br>
+        <table className="Table">
+                <thead>
+                    <tr>
+                        <th>Expense</th>
+                        <th>Cost</th>
+                        <th>Date</th>
+                        <th>Frequency</th>
+                        <th>Actions</th> {/* New column for actions */}
+                    </tr>
+                </thead>
+                <tbody>
+                    {expenses.map((expense, index) => (
+                        <tr key={index}>
+                            <td>{expense.expense}</td>
+                            <td>£{expense.cost}</td>
+                            <td>{expense.date}</td>
+                            <td>{expense.frequency}</td>
+                            <td>
+                                <button onClick={() => handleDelete(expense.id)}>Delete</button> {/* Delete button */}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
 
     )
 
