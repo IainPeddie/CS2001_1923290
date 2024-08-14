@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example._0.model.Expense;
 import com.example._0.ExpensePostDTO;
 import com.example._0.ExpenseService;
-import com.example._0.ExpenseType;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
