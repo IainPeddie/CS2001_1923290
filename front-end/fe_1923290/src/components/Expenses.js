@@ -16,6 +16,9 @@ export default function Expenses(){
         if (expense.current.validity.valueMissing || expenseCost.current.validity.valueMissing || expenseDate.current.validity.valueMissing || expenseFrequency.current.validity.valueMissing){
                 alert("Fill out all of the boxes, please.");
         }
+        else if (expenseCost.current.value <= 0){
+            alert("Input must be greater than 0. Enter a valid cost")
+        }
         else if (expenseDate.current.validity.date){
             alert("Invalid date. Please enter a valid date.");
         }else{
@@ -255,7 +258,7 @@ export default function Expenses(){
                     {expenses.map((expense, index) => (
                         <tr key={index}>
                             <td>{expense.expense}</td>
-                            <td>£{expense.cost}</td>
+                            <td>£{parseFloat(expense.cost).toFixed(2)}</td>
                             <td>{expense.date}</td>
                             <td>{expense.frequency}</td>
                             <td>{calculateNextPaymentDate(expense.date, expense.frequency)}</td>
